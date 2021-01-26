@@ -97,7 +97,7 @@ void RosPage::initial_subscriber(){
   svrResponseSubscription = node.subscribe("tm_driver/svr_response", 1000, &RosPage::svr_response_callback, this);
 }
 void RosPage::initial_client(){
-  connectClient = node.serviceClient<tm_msgs::ConnectTM>("tm_diver/connect_tm");
+  connectClient = node.serviceClient<tm_msgs::ConnectTM>("tm_driver/connect_tm");
 }
 RosPage::RosPage()
  :lastStatus(false)
