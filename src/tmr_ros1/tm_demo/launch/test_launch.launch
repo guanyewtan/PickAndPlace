@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+  Test static broadcasters and more.
+  Usage:
+    test_launch.launch
+-->
+<launch>
+    <arg name="prefix" default="" />
+    <arg name="robot_ip" default="192.168.1.2"/>
+    <arg name="max_velocity" default="3.14159" /> <!-- [rad/s] -->
+    <arg name="min_payload" default="0.0" /> <!-- [kg] -->
+    <arg name="max_payload" default="6.0" /> <!-- [kg] -->
+    <arg name="base_frame" default="$(arg prefix)base" />
+    <arg name="tool_frame" default="$(arg prefix)tool0" />
+    <arg name="pick" default="0.17, -0.45, 0.2, 0, 0, -3.14159," />
+    <arg name="place" default="0.25 -0.5 0.18 0 1.57 -3.1416" />
+
+
+<!-- tm driver -->
+    <node name="tm_driver" pkg="tm_driver" type="tm_driver" output="screen">
+        <param name="prefix" type="str" value="$(arg prefix)" />
+        <param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
+        <param name="max_velocity" type="double" value="$(arg max_velocity)" />
+        <param name="min_payload" type="double" value="$(arg min_payload)" />
+        <param name="max_payload" type="double" value="$(arg max_payload)" />
+        <param name="base_frame" type="str" value="$(arg base_frame)" />
+        <param name="tool_frame" type="str" value="$(arg tool_frame)" />
+    </node>
+
+
+<!-- transforms -->   
+    <node pkg="tf2_ros" type="static_transform_publisher" name="safepick_broadcaster" args="0 0 -0.2 0 0 0 pick safe_pick" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="safeplace_broadcaster" args="0 0 -0.2 0 0 0 place safe_place" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="pick_broadcaster" args="$(arg pick) base pick" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="place_broadcaster" args="$(arg place) base place" />
+
+
+</launch>
